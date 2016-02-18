@@ -1,0 +1,25 @@
+language: python
+python:
+  - 2.6
+  - 2.7
+  - 3.3
+  - 3.4
+  - 3.5
+
+install:
+  - pip install mongo-orchestration
+  - sudo curl -L -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.2.0/elasticsearch-2.2.0.tar.gz
+  - tar -xvf elasticsearch-2.2.0.tar.gz
+  - cd elasticsearch-2.2.0
+  - echo 'y' |  bin/plugin install mapper-attachments
+
+before_script:
+  - bin/elasticsearch > temp.txt &
+  - cd ..
+  - mongo-orchestration start
+
+script:
+  - python setup.py test
+
+after_script:
+  - mongo-orchestration stop
