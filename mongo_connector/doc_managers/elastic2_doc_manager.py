@@ -181,7 +181,7 @@ class DocManager(DocManagerBase):
                     "_type": self.meta_type,
                     "_id": doc_id,
                     "_source": {
-                        "ns": index,
+                        "ns": namespace,
                         "_ts": timestamp
                     }
                 }
