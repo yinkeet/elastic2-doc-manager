@@ -29,7 +29,7 @@ setup(name='elastic2-doc-manager',
       author='anna herlihy',
       author_email='mongodb-user@googlegroups.com',
       url='https://github.com/mongodb-labs/elastic2-doc-manager',
-      install_requires=['mongo-connector >= 2.3.0', "elasticsearch>=2.0.0,<3.0.0", "requests", "aws4auth >= 0.7"],
+      install_requires=['mongo-connector >= 2.3.0', "elasticsearch>=2.0.0,<3.0.0", "requests", "requests-aws4auth >= 0.7"],
       packages=["mongo_connector", "mongo_connector.doc_managers"],
       license="Apache License, Version 2.0",
       classifiers=[
