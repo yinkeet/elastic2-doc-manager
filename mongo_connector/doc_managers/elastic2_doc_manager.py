@@ -20,7 +20,6 @@ Elasticsearch.
 import base64
 import logging
 import warnings
-import requests
 
 from threading import Timer
 
