@@ -359,11 +359,11 @@ class DocManager(DocManagerBase):
             kw = {}
             if self.chunk_size > 0:
                 kw['chunk_size'] = self.chunk_size
+                kw['pipeline'] = "test-pipeline"
 
             responses = streaming_bulk(client=self.elastic,
                                        actions=docs_to_upsert(),
-                                       **kw,
-                                       params={"pipeline": "test-pipeline"})
+                                       **kw)
 
             for ok, resp in responses:
                 if not ok:
