@@ -362,7 +362,8 @@ class DocManager(DocManagerBase):
 
             responses = streaming_bulk(client=self.elastic,
                                        actions=docs_to_upsert(),
-                                       **kw)
+                                       **kw,
+                                       params={"pipeline": "test-pipeline"})
 
             for ok, resp in responses:
                 if not ok:
@@ -481,7 +482,7 @@ class DocManager(DocManagerBase):
             try:
                 action_buffer = self.BulkBuffer.get_buffer()
                 if action_buffer:
-                    successes, errors = bulk(self.elastic, action_buffer)
+                    successes, errors = bulk(self.elastic, action_buffer, False, {"pipeline": "test-pipeline"})
                     LOG.debug("Bulk request finished, successfully sent %d "
                               "operations", successes)
                     if errors:
