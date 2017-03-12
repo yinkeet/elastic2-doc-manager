@@ -204,6 +204,8 @@ class DocManager(DocManagerBase):
         self.auto_commiter = AutoCommiter(self, self.auto_send_interval,
                                           self.auto_commit_interval)
         self.auto_commiter.start()
+        # Pipeline to be used
+        self.pipeline = kwargs.get('pipeline', None)
 
     def _index_and_mapping(self, namespace):
         """Helper method for getting the index and type from a namespace."""
@@ -359,7 +361,9 @@ class DocManager(DocManagerBase):
             kw = {}
             if self.chunk_size > 0:
                 kw['chunk_size'] = self.chunk_size
-                kw['pipeline'] = "test-pipeline"
+
+            if self.pipeline is not None:
+                kw['pipeline'] = self.pipeline
 
             responses = streaming_bulk(client=self.elastic,
                                        actions=docs_to_upsert(),
@@ -482,7 +486,10 @@ class DocManager(DocManagerBase):
             try:
                 action_buffer = self.BulkBuffer.get_buffer()
                 if action_buffer:
-                    successes, errors = bulk(self.elastic, action_buffer, False, {"pipeline": "test-pipeline"})
+                    if self.pipeline is None:
+                        successes, errors = bulk(self.elastic, action_buffer)
+                    else:
+                        successes, errors = bulk(self.elastic, action_buffer, False, {"pipeline": self.pipeline})
                     LOG.debug("Bulk request finished, successfully sent %d "
                               "operations", successes)
                     if errors:
