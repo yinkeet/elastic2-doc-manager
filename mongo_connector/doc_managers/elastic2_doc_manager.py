@@ -362,7 +362,7 @@ class DocManager(DocManagerBase):
             if self.chunk_size > 0:
                 kw['chunk_size'] = self.chunk_size
 
-            if self.pipeline is not None:
+            # if self.pipeline is not None:
                 kw['pipeline'] = self.pipeline
 
             responses = streaming_bulk(client=self.elastic,
@@ -486,9 +486,9 @@ class DocManager(DocManagerBase):
             try:
                 action_buffer = self.BulkBuffer.get_buffer()
                 if action_buffer:
-                    if self.pipeline is None:
-                        successes, errors = bulk(self.elastic, action_buffer)
-                    else:
+                    # if self.pipeline is None:
+                    #     successes, errors = bulk(self.elastic, action_buffer)
+                    # else:
                         successes, errors = bulk(self.elastic, action_buffer, False, {"pipeline": self.pipeline})
                     LOG.debug("Bulk request finished, successfully sent %d "
                               "operations", successes)
